@@ -1,15 +1,12 @@
 import fs from 'node:fs';
-import deepmerge from 'deepmerge';
 
 const packageJson = JSON.parse(fs.readFileSync('../package.json', 'utf8'));
-
-const isFirefox = process.env.__FIREFOX__ === 'true';
 
 /**
  * After changing, please reload the extension at `chrome://extensions`
  * @type {chrome.runtime.ManifestV3}
  */
-const manifest = deepmerge({
+const manifest = {
   manifest_version: 3,
   name: 'Igloo Helper for staff use',
   version: packageJson.version,
@@ -42,13 +39,12 @@ const manifest = deepmerge({
       css: ['content.css'], // public folder
     },
   ],
-  devtools_page: 'devtools/index.html',
   web_accessible_resources: [
     {
       resources: ['*.js', '*.css', '*.svg', 'icon-128.png', 'icon-34.png'],
       matches: ['*://*/*'],
     },
   ],
-});
+};
 
 export default manifest;
