@@ -19,14 +19,9 @@ const sidePanelConfig = {
 const manifest = deepmerge(
   {
     manifest_version: 3,
-    default_locale: 'en',
-    /**
-     * if you want to support multiple languages, you can use the following reference
-     * https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Internationalization
-     */
-    name: '__MSG_extensionName__',
+    name: 'Igloo Helper for staff use',
     version: packageJson.version,
-    description: '__MSG_extensionDescription__',
+    description: 'Chrome extension boilerplate developed with Vite, React and Typescript',
     host_permissions: ['<all_urls>'],
     permissions: ['storage', 'scripting', 'tabs', 'notifications'],
     options_page: 'options/index.html',
