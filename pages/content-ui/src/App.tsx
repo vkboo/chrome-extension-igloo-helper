@@ -1,13 +1,5 @@
-import { Button } from '@extension/ui';
-import { exampleThemeStorage } from '@extension/storage';
+import SearchBox from './components/search-box';
 
 export default function App() {
-  return (
-    <div className="flex items-center justify-between gap-2 rounded bg-blue-100 px-2 py-1">
-      <div className="flex gap-1 text-blue-500">
-        Edit <strong className="text-blue-700">pages/content-ui/src/app.tsx</strong> and save to reload.
-      </div>
-      <Button onClick={exampleThemeStorage.toggle}>Toggle Theme</Button>
-    </div>
-  );
+  return <SearchBox className="fixed right-8 top-20 z-50" />;
 }
