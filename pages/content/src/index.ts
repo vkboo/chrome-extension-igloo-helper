@@ -1,5 +1,6 @@
-import { toggleTheme } from '@src/toggleTheme';
+import injectScript from './injectScript';
+injectScript('content/overwriteXhrFetch.js');
 
-console.log('content script loaded');
+// console.log('content script loaded');
 
-void toggleTheme();
+// void toggleTheme();
