@@ -1,3 +1,4 @@
+// TODO 拦截的通信 2
 (function (xhr) {
   var XHR = xhr.prototype;
 

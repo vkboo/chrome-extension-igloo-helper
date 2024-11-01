@@ -1,16 +1,17 @@
 import fs from 'node:fs';
-import { resolve } from 'node:path';
+import { resolve, basename } from 'node:path';
 import type { PluginOption } from 'vite';
 
-const rootDir = resolve(__dirname);
-const targetFilePath = resolve(rootDir, 'src/overwriteXhrFetch.js');
+export function makeJavascriptFile(config: { outDir: string; targetFilePath: string }): PluginOption {
+  const { outDir: _outDir, targetFilePath } = config;
+  const outDir = resolve(_outDir, 'page_scripts');
+  const filename = basename(targetFilePath);
 
-export default function makeOriginJavascriptFilePlugin(config: { outDir: string }): PluginOption {
   function copyFile(filePath: string, to: string) {
     if (!fs.existsSync(to)) {
       fs.mkdirSync(to);
     }
-    const targetPath = resolve(to, 'overwriteXhrFetch.js');
+    const targetPath = resolve(to, filename);
     fs.copyFileSync(filePath, targetPath);
   }
 
@@ -20,7 +21,6 @@ export default function makeOriginJavascriptFilePlugin(config: { outDir: string 
       this.addWatchFile(targetFilePath);
     },
     async writeBundle() {
-      const outDir = config.outDir;
       copyFile(targetFilePath, outDir);
     },
   };

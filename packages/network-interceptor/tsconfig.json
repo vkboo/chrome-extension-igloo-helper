@@ -1,0 +1,10 @@
+{
+  "extends": "@extension/tsconfig/utils",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "rootDir": "./plugins",
+    "outDir": "dist/plugins",
+    "types": ["chrome"]
+  },
+  "include": ["plugins"]
+}

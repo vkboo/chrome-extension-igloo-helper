@@ -1,6 +1,2 @@
-import injectScript from './injectScript';
-injectScript('content/overwriteXhrFetch.js');
-
-// console.log('content script loaded');
-
-// void toggleTheme();
+import { injectScript } from '@extension/network-interceptor';
+injectScript();
