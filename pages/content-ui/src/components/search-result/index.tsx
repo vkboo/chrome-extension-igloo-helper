@@ -1,71 +1,63 @@
+import { groupBy } from 'lodash-es';
 import { Separator, Avatar, AvatarImage, AvatarFallback } from '@extension/ui';
 import { cn } from '@extension/ui/lib/utils';
-import * as React from 'react';
 import type { FC } from 'react';
-
-type Props = {
-  className?: string;
-  keyword: string;
-};
+import * as React from 'react';
+import { css } from '@emotion/css';
+import type { Props } from './types';
+import { COUNTRY_FLAGS } from './constants';
 
 // TODO
 // 键盘导航
-// 需要一个抓接口与当前host的匹配表
 const SearchResult: FC<Props> = props => {
-  const { className, keyword } = props;
+  const { className, platforms } = props;
+
+  const groups = React.useMemo(() => {
+    const groupsObj = groupBy(platforms, 'kind');
+    return Object.entries(groupsObj);
+  }, [platforms]);
+
   return (
-    <div className={cn(className, 'px-3 pb-3 text-sm space-y-3')}>
-      <div className="space-y-1">
-        <span className="text-slate-400">UAP</span>
-        <div className="space-y-1.5 pl-2">
-          <div
-            className="flex items-center gap-1 text-slate-200 hover:underline cursor-pointer"
-            tabIndex={0}
-            onClick={() => {
-              console.log('click');
-            }}>
-            <Avatar className="w-auto h-5">
-              <AvatarImage src={'https://static.iglooinsure.com/partner/square/foodpanda-th.svg'} alt="logo" />
-              <AvatarFallback>
-                {/* TODO substring(0,2).toUpperCase() */}
-                CT
-              </AvatarFallback>
-            </Avatar>
-            <div className="relative">
-              <span>LAZADA PH GADGET</span>
-              <span className="absolute -right-4 -top-1">🇻🇳</span>
+    <div
+      className={cn(
+        className,
+        'px-3 pb-3 text-sm space-y-3 max-h-96 overflow-y-auto overflow-x-hidden',
+        css`
+          background: #1f448d;
+        `,
+      )}>
+      {groups.map((group, index) => {
+        const [groupName, platforms] = group;
+        const separatorVisible = index < groups.length - 1;
+        return (
+          <React.Fragment key={groupName}>
+            <div className="space-y-2.5">
+              <span className="text-slate-400">{groupName}</span>
+              <div className="space-y-2 pl-2">
+                {platforms.map(platform => (
+                  <div
+                    key={platform.key}
+                    className="flex items-center gap-1 text-slate-200 hover:underline cursor-pointer"
+                    onClick={() => {
+                      console.log('click');
+                    }}>
+                    <Avatar className="w-5 h-5">
+                      <AvatarImage src={platform.logoUrl} alt="logo" />
+                      <AvatarFallback>{platform.name.substring(0, 2).toUpperCase()}</AvatarFallback>
+                    </Avatar>
+                    <div className="relative">
+                      <span>{platform.name}</span>
+                      <span className="absolute -right-4 -top-1">{COUNTRY_FLAGS[platform.country]}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-          <div className="flex items-center gap-1 text-slate-200" tabIndex={1}>
-            <span>(logo)</span>
-            <span>LAZADA PH GADGET</span>
-          </div>
-          <div className="flex items-center gap-1 text-slate-200" tabIndex={2}>
-            <span>(logo)</span>
-            <span>LAZADA PH GADGET</span>
-          </div>
-        </div>
-      </div>
 
-      <Separator className="bg-slate-700" />
-
-      <div className="space-y-1">
-        <span className="text-slate-400">UAP</span>
-        <div className="space-y-1.5 pl-2">
-          <div className="flex items-center gap-1 text-slate-200">
-            <span>(logo)</span>
-            <span>LAZADA PH GADGET</span>
-          </div>
-          <div className="flex items-center gap-1 text-slate-200">
-            <span>(logo)</span>
-            <span>LAZADA PH GADGET</span>
-          </div>
-          <div className="flex items-center gap-1 text-slate-200">
-            <span>(logo)</span>
-            <span>LAZADA PH GADGET</span>
-          </div>
-        </div>
-      </div>
+            {separatorVisible && <Separator className="bg-slate-700" />}
+          </React.Fragment>
+        );
+      })}
     </div>
   );
 };

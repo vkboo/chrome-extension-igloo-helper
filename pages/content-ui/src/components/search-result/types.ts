@@ -1,9 +1,9 @@
-type Props = {
+export type Props = {
   className?: string;
-  keyword: string;
+  platforms: Platform[];
 };
 
-type Platform = {
+export type Platform = {
   key: string;
   logoUrl: string;
   name: string;

@@ -7,7 +7,7 @@ type Request = {
 };
 
 type Response = {
-  data: object;
+  data: any;
   headers: Headers;
 };
 
