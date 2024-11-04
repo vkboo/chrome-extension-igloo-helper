@@ -2,8 +2,10 @@ import fs from 'node:fs';
 import { resolve, basename } from 'node:path';
 import type { PluginOption } from 'vite';
 
-export function makeJavascriptFile(config: { outDir: string; targetFilePath: string }): PluginOption {
-  const { outDir: _outDir, targetFilePath } = config;
+const targetFilePath = resolve(__dirname, '../../', './scripts/overwriteXhrFetch.js');
+
+export function makeJavascriptFile(config: { outDir: string }): PluginOption {
+  const { outDir: _outDir } = config;
   const outDir = resolve(_outDir, 'page_scripts');
   const filename = basename(targetFilePath);
 

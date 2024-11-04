@@ -7,16 +7,6 @@ const rootDir = resolve(__dirname);
 const srcDir = resolve(rootDir, 'src');
 
 
-// TODO
-// 这个应该可以继续集成在 '@extension/network-interceptor/plugins' 中
-const targetFilePath = resolve(
-  rootDir,
-  'node_modules',
-  '@extension/network-interceptor/scripts/overwriteXhrFetch.js'
-);
-
-
-
 const outDirDist = resolve(rootDir, '..', '..', 'dist');
 const outDirContent = resolve(outDirDist, 'content');
 
@@ -29,10 +19,7 @@ export default withPageConfig({
   publicDir: resolve(rootDir, 'public'),
   plugins: [
     isDev && makeEntryPointPlugin(),
-    makeJavascriptFile({
-      outDir: outDirDist,
-      targetFilePath,
-    }),
+    makeJavascriptFile({ outDir: outDirDist }),
   ],
   build: {
     lib: {
