@@ -295,6 +295,9 @@ importers:
 
   pages/content-ui:
     dependencies:
+      '@extension/network-interceptor':
+        specifier: workspace:*
+        version: link:../../packages/network-interceptor
       '@extension/shared':
         specifier: workspace:*
         version: link:../../packages/shared

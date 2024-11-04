@@ -1,4 +1,27 @@
-// TODO 拦截的通信 2
+function __parseHeaders(rawHeaders) {
+  const headers = {};
+  rawHeaders
+    .trim()
+    .split(/[\r\n]+/)
+    .forEach(line => {
+      const parts = line.split(': ');
+      const key = parts.shift();
+      const value = parts.join(': ');
+      headers[key] = value;
+    });
+  return headers;
+}
+
+function __postMessage(data) {
+  window.postMessage(
+    {
+      source: 'extension/network-interceptor',
+      ...data,
+    },
+    '*',
+  );
+}
+
 (function (xhr) {
   var XHR = xhr.prototype;
 
@@ -11,14 +34,24 @@
     return open.apply(this, arguments);
   };
 
-  XHR.send = function (postData) {
-    // console.log('injected script xhr request:', this._method, this._url, this.getAllResponseHeaders(), postData);
+  XHR.send = function (body) {
     this.addEventListener('load', function () {
-      // window.postMessage({ type: 'xhr', data: this.response }, '*');  // send to content script
-      console.log('xhr response:', {
-        response: this.response,
-        reqUrl: this._url,
-      });
+      const parsedHeaders = __parseHeaders(this.getAllResponseHeaders());
+      const responseHeaders = new Headers(parsedHeaders);
+      const responseContentType = responseHeaders.get('Content-Type');
+
+      let requestDataJson = body;
+      let responseJson = this.response;
+
+      if (responseContentType.includes('application/json')) {
+        try {
+          requestDataJson = JSON.parse(body);
+          responseJson = JSON.parse(this.response);
+        } catch {}
+        const request = { method: this._method, url: this._url, data: requestDataJson };
+        const response = { headers: parsedHeaders, data: responseJson };
+        __postMessage({ type: 'xhr', request, response });
+      }
     });
     return send.apply(this, arguments);
   };
@@ -26,15 +59,28 @@
 
 const { fetch: origFetch } = window;
 window.fetch = async (...args) => {
-  const response = await origFetch(...args);
-  response
-    .clone()
-    .json() // maybe json(), text(), blob()
-    .then(data => {
-      console.log('fetch data', { data, req: args[0] });
-      // window.postMessage({ type: 'fetch', data: data }, '*'); // send to content script
-      //window.postMessage({ type: 'fetch', data: URL.createObjectURL(data) }, '*'); // if a big media file, can createObjectURL before send to content script
-    })
-    .catch(err => console.error(err));
-  return response;
+  const originResponse = await origFetch(...args);
+  const responseClone = originResponse.clone();
+
+  const responseHeaders = responseClone.headers;
+  const responseContentType = responseHeaders.get('Content-Type');
+  const responseHeadersJson = Object.fromEntries(responseHeaders.entries());
+
+  if (responseContentType.includes('application/json')) {
+    const [url, requestOptions] = args;
+    const { data: requestData, method: requestMethod } = requestOptions;
+    originResponse
+      .clone()
+      .json()
+      .then(data => {
+        const request = {
+          method: requestMethod,
+          url: url,
+          data: requestData,
+        };
+        const response = { headers: responseHeadersJson, data };
+        __postMessage({ type: 'fetch', request, response });
+      });
+  }
+  return originResponse;
 };
