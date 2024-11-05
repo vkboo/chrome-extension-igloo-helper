@@ -23,7 +23,6 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@emotion/css": "^11.13.4",
     "@extension/network-interceptor": "workspace:*",
     "@extension/shared": "workspace:*",
     "@extension/storage": "workspace:*",
