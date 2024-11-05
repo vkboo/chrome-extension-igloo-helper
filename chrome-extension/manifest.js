@@ -23,11 +23,11 @@ const manifest = {
   },
   content_scripts: [
     {
-      matches: ['http://*/*', 'https://*/*', '<all_urls>'],
+      matches: ['https://auth.qa.iglooinsure.com/*'],
       js: ['content-ui/index.iife.js'],
     },
     {
-      matches: ['http://*/*', 'https://*/*', '<all_urls>'],
+      matches: ['https://auth.qa.iglooinsure.com/*'],
       js: ['content/index.iife.js'],
       run_at: 'document_start',
       all_frames: true,
