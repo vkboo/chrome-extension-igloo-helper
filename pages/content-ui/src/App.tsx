@@ -1,11 +1,10 @@
 // TODO
 // 需要一个抓接口与当前host的匹配表
 
-import { response } from '@extension/network-interceptor';
-import * as React from 'react';
 import SearchBox from './components/search-box';
 import SearchResult from './components/search-result';
 import type { Platform } from './components/search-result/types';
+import { useNetworkResponse } from '@extension/shared/lib/hooks';
 
 export default function App() {
   const scope = useNetworkResponse<Record<string, boolean>>(
@@ -59,23 +58,4 @@ export default function App() {
       {keyword => <SearchResult platforms={filterPlatforms(keyword)} />}
     </SearchBox>
   );
-}
-
-// TODO: 提取到Shared里面去
-function useNetworkResponse<T extends any>(
-  descriptor: string,
-  filterFn: (n: any) => T = n => n,
-  deps: React.DependencyList = [],
-) {
-  const [data, setData] = React.useState<T>();
-  React.useEffect(() => {
-    const unsubscribe = response.on(descriptor, (_, res) => {
-      setData(filterFn?.(res.data));
-    });
-    return () => {
-      unsubscribe();
-    };
-  }, deps);
-
-  return data;
 }

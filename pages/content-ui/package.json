@@ -23,7 +23,6 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@extension/network-interceptor": "workspace:*",
     "@extension/shared": "workspace:*",
     "@extension/storage": "workspace:*",
     "@extension/ui": "workspace:*",

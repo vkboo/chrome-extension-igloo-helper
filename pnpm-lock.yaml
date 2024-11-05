@@ -187,6 +187,9 @@ importers:
 
   packages/shared:
     devDependencies:
+      '@extension/network-interceptor':
+        specifier: workspace:*
+        version: link:../network-interceptor
       '@extension/storage':
         specifier: workspace:*
         version: link:../storage
@@ -295,9 +298,6 @@ importers:
 
   pages/content-ui:
     dependencies:
-      '@extension/network-interceptor':
-        specifier: workspace:*
-        version: link:../../packages/network-interceptor
       '@extension/shared':
         specifier: workspace:*
         version: link:../../packages/shared
