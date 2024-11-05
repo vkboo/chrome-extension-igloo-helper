@@ -1,5 +1,6 @@
 import { createRoot } from 'react-dom/client';
 import App from '@src/App';
+import { ShadowRootCSSModuleContext } from '@src/contexts';
 import tailwindcssOutput from '../dist/tailwind-output.css?inline';
 
 const root = document.createElement('div');
@@ -30,4 +31,8 @@ if (navigator.userAgent.includes('Firefox')) {
 }
 
 shadowRoot.appendChild(rootIntoShadow);
-createRoot(rootIntoShadow).render(<App />);
+createRoot(rootIntoShadow).render(
+  <ShadowRootCSSModuleContext.Provider value={{ shadowRoot }}>
+    <App />
+  </ShadowRootCSSModuleContext.Provider>,
+);
