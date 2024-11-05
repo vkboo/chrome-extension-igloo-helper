@@ -19,6 +19,30 @@ const SearchResult: FC<Props> = props => {
     return null;
   }
 
+  const getPagePlatformList = () => {
+    return Array.from(document.querySelectorAll('.igloo-platform') as NodeListOf<HTMLDivElement>).map(node => {
+      const nameNode = node.querySelector('.igloo-platform-name');
+      const imgNode = node.querySelector('.ant-image-img[src^="https://static.iglooinsure.com/partner"]');
+      if (nameNode) {
+        const name = nameNode.innerHTML.trim();
+        return { name, node };
+      } else {
+        const src = imgNode!.getAttribute('src')!;
+        return { key: extractNameFromUrl(src), node };
+      }
+    });
+  };
+
+  const onClickPlatform = (key: string, name: string) => {
+    const list = getPagePlatformList();
+    const platform = list.find(item => {
+      return item?.key === key || item?.name?.toLocaleLowerCase() === name;
+    });
+    if (platform) {
+      platform.node?.click();
+    }
+  };
+
   const groupsNode = groups.map((group, index) => {
     const [groupName, platforms] = group;
     const separatorVisible = index < groups.length - 1;
@@ -32,7 +56,7 @@ const SearchResult: FC<Props> = props => {
                 key={platform.key}
                 className="flex items-center gap-1 text-slate-200 hover:underline cursor-pointer"
                 onClick={() => {
-                  console.log('click');
+                  onClickPlatform(platform.key, platform.name.toLocaleLowerCase());
                 }}>
                 <Avatar className="w-5 h-5">
                   <AvatarImage src={platform.logoUrl} alt="logo" />
@@ -60,3 +84,8 @@ const SearchResult: FC<Props> = props => {
 };
 
 export default SearchResult;
+
+function extractNameFromUrl(url: string) {
+  const match = url.match(/partner\/\w+\/(.+)\.svg$/);
+  return match ? match[1] : '';
+}
