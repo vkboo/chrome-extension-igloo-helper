@@ -1,10 +1,9 @@
 // TODO
 // 需要一个抓接口与当前host的匹配表
 
-import SearchBox from './components/search-box';
-import SearchResult from './components/search-result';
-import type { Platform } from './components/search-result/types';
 import { useNetworkResponse } from '@extension/shared/lib/hooks';
+import { AccessPage, SearchBox, SearchResult } from './components';
+import type { Platform } from './components/search-result/types';
 
 export default function App() {
   const scope = useNetworkResponse<Record<string, boolean>>(
@@ -54,8 +53,12 @@ export default function App() {
   };
 
   return (
-    <SearchBox className="fixed right-8 top-20 z-50">
-      {keyword => <SearchResult platforms={filterPlatforms(keyword)} />}
-    </SearchBox>
+    <>
+      <AccessPage matches={['https://auth.*.iglooinsure.com/platforms', 'https://auth.iglooinsure.com/platforms']}>
+        <SearchBox className="fixed right-8 top-20 z-50">
+          {keyword => <SearchResult platforms={filterPlatforms(keyword)} />}
+        </SearchBox>
+      </AccessPage>
+    </>
   );
 }

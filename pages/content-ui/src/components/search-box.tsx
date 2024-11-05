@@ -14,7 +14,7 @@ type Props = {
 
 const os = getOS();
 
-const SearchBox: FC<Props> = props => {
+export const SearchBox: FC<Props> = props => {
   const { className, children } = props;
   const [keyword, setKeyword] = React.useState<string>('');
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -60,5 +60,3 @@ const SearchBox: FC<Props> = props => {
     </div>
   );
 };
-
-export default SearchBox;

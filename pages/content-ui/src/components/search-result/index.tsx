@@ -8,7 +8,7 @@ import { COUNTRY_FLAGS } from './constants';
 
 // TODO
 // 键盘导航
-const SearchResult: FC<Props> = props => {
+export const SearchResult: FC<Props> = props => {
   const { className, platforms } = props;
   const groups = React.useMemo(() => {
     const groupsObj = groupBy(platforms, 'kind');
@@ -82,8 +82,6 @@ const SearchResult: FC<Props> = props => {
     </div>
   );
 };
-
-export default SearchResult;
 
 function extractNameFromUrl(url: string) {
   const match = url.match(/partner\/\w+\/(.+)\.svg$/);
