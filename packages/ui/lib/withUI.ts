@@ -1,6 +1,7 @@
 import deepmerge from 'deepmerge';
 import type { Config } from 'tailwindcss/types/config';
 import { fontFamily } from 'tailwindcss/defaultTheme';
+// TODO 探究 tailwindcss-animate 的使用，加上动画效果
 import tailwindAnimate from 'tailwindcss-animate';
 
 export function withUI(tailwindConfig: Config): Config {

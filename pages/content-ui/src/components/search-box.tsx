@@ -39,7 +39,7 @@ const SearchBox: FC<Props> = props => {
   return (
     // TODO
     // opacity-65 focus-within:opacity-100 hover:bg-slate-700
-    <div className={cn('w-72 rounded-md bg-slate-800', className)}>
+    <div className={cn('w-72 rounded-md bg-slate-800 overflow-hidden', className)}>
       <div className="group flex items-center justify-center gap-1 px-3  transition-all">
         <MagnifyingGlassIcon className="text-slate-400" width={24} height={24} />
         {/* TODO group-hover:bg-slate-700  */}
