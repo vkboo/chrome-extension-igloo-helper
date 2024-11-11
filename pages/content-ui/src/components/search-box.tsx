@@ -29,12 +29,15 @@ export const SearchBox: FC<Props> = props => {
     setKeyword(value);
   };
 
+  const onInputFocus = () => {
+    setOpen(true);
+  };
+
   const reset = () => {
     setKeyword('');
   };
 
   useKeyPress(['meta.k'], () => {
-    setOpen(true);
     inputRef.current?.focus();
   });
 
@@ -59,6 +62,7 @@ export const SearchBox: FC<Props> = props => {
           placeholder="Quick search..."
           value={keyword}
           onChange={onInputChange}
+          onFocus={onInputFocus}
         />
         <span
           data-focus-tip-key={hotKey}
