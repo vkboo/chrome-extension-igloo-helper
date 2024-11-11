@@ -16,6 +16,7 @@ const os = getOS();
 
 export const SearchBox: FC<Props> = props => {
   const { className, children } = props;
+  const [open, setOpen] = React.useState<boolean>(false);
   const [keyword, setKeyword] = React.useState<string>('');
   const inputRef = React.useRef<HTMLInputElement>(null);
   const [hotKey] = React.useState(() => {
@@ -23,18 +24,25 @@ export const SearchBox: FC<Props> = props => {
     return osKey ? `${osKey} K` : osKey;
   });
 
-  useKeyPress(['meta.k'], () => {
-    inputRef.current?.focus();
-  });
-
-  useKeyPress(['Esc'], () => {
-    inputRef.current?.blur();
-  });
-
   const onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setKeyword(value);
   };
+
+  const reset = () => {
+    setKeyword('');
+  };
+
+  useKeyPress(['meta.k'], () => {
+    setOpen(true);
+    inputRef.current?.focus();
+  });
+
+  useKeyPress(['Esc'], () => {
+    setOpen(false);
+    inputRef.current?.blur();
+    reset();
+  });
 
   return (
     // TODO
@@ -45,7 +53,7 @@ export const SearchBox: FC<Props> = props => {
         {/* TODO group-hover:bg-slate-700  */}
         <Input
           ref={inputRef}
-          className="peer border-none px-0 rounded-none flex-1"
+          className="border-none px-0 rounded-none flex-1"
           placeholder="Quick search..."
           value={keyword}
           onChange={onInputChange}
@@ -53,10 +61,13 @@ export const SearchBox: FC<Props> = props => {
         <span
           data-focus-tip-key={hotKey}
           data-blur-tip-key="Esc"
-          className="text-slate-500 text-sm after:content-[attr(data-focus-tip-key)] peer-focus:after:content-[attr(data-blur-tip-key)]"
+          className={cn(
+            'text-slate-500 text-sm after:content-[attr(data-focus-tip-key)]',
+            open && 'after:content-[attr(data-blur-tip-key)]',
+          )}
         />
       </div>
-      {children(keyword)}
+      {open && children(keyword)}
     </div>
   );
 };
