@@ -3,21 +3,16 @@ import { Separator, Avatar, AvatarImage, AvatarFallback } from '@extension/ui';
 import { cn } from '@extension/ui/lib/utils';
 import type { FC } from 'react';
 import * as React from 'react';
-import type { Props } from './types';
+import type { Props, Platform } from './types';
 import { COUNTRY_FLAGS } from './constants';
+import useKeyboardNav from './useKeyboardNav';
 
-// TODO
-// 键盘导航
 export const SearchResult: FC<Props> = props => {
   const { className, platforms } = props;
   const groups = React.useMemo(() => {
     const groupsObj = groupBy(platforms, 'kind');
     return Object.entries(groupsObj);
   }, [platforms]);
-
-  if (groups.length === 0) {
-    return null;
-  }
 
   const getPagePlatformList = () => {
     return Array.from(document.querySelectorAll('.igloo-platform') as NodeListOf<HTMLDivElement>).map(node => {
@@ -33,7 +28,9 @@ export const SearchResult: FC<Props> = props => {
     });
   };
 
-  const onClickPlatform = (key: string, name: string) => {
+  const onClickPlatform = (_platform: Platform) => {
+    const { key, name: _name } = _platform;
+    const name = _name.toLocaleLowerCase();
     const list = getPagePlatformList();
     const platform = list.find(item => {
       return item?.key === key || item?.name?.toLocaleLowerCase() === name;
@@ -42,6 +39,15 @@ export const SearchResult: FC<Props> = props => {
       platform.node?.click();
     }
   };
+  const { currentPlatformKey, currentRef, reset } = useKeyboardNav(groups, onClickPlatform);
+
+  React.useEffect(() => {
+    reset();
+  }, [groups]);
+
+  if (groups.length === 0) {
+    return null;
+  }
 
   const groupsNode = groups.map((group, index) => {
     const [groupName, platforms] = group;
@@ -50,13 +56,17 @@ export const SearchResult: FC<Props> = props => {
       <React.Fragment key={groupName}>
         <div className="space-y-2.5">
           <span className="text-slate-400">{groupName}</span>
-          <div className="space-y-2 pl-2">
+          <div className="space-y-0.5">
             {platforms.map(platform => (
               <div
                 key={platform.key}
-                className="flex items-center gap-1 text-slate-200 hover:underline cursor-pointer"
+                ref={currentPlatformKey === platform.key ? currentRef : null}
+                className={cn(
+                  'flex items-center gap-1 text-slate-200 hover:underline cursor-pointer py-1 px-2 rounded-sm',
+                  currentPlatformKey === platform.key && 'bg-slate-600 text-slate-100',
+                )}
                 onClick={() => {
-                  onClickPlatform(platform.key, platform.name.toLocaleLowerCase());
+                  onClickPlatform(platform);
                 }}>
                 <Avatar className="w-5 h-5">
                   <AvatarImage src={platform.logoUrl} alt="logo" />
