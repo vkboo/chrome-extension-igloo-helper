@@ -9,6 +9,7 @@ import useKeyboardNav from './useKeyboardNav';
 
 export const SearchResult: FC<Props> = props => {
   const { className, platforms } = props;
+
   const groups = React.useMemo(() => {
     const groupsObj = groupBy(platforms, 'kind');
     return Object.entries(groupsObj);
@@ -29,11 +30,12 @@ export const SearchResult: FC<Props> = props => {
   };
 
   const onClickPlatform = (_platform: Platform) => {
-    const { key, name: _name } = _platform;
+    const { key: _key, name: _name } = _platform;
+    const key = _key.toLocaleLowerCase();
     const name = _name.toLocaleLowerCase();
     const list = getPagePlatformList();
     const platform = list.find(item => {
-      return item?.key === key || item?.name?.toLocaleLowerCase() === name;
+      return item?.key?.toLocaleLowerCase() === key || item?.name?.toLocaleLowerCase() === name;
     });
     if (platform) {
       platform.node?.click();
