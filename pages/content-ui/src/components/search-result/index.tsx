@@ -11,6 +11,7 @@ export const SearchResult: FC<Props> = props => {
   const { className, platforms } = props;
 
   const groups = React.useMemo(() => {
+    // TODO bug:  kind -> undefined -> [Untitled]
     const groupsObj = groupBy(platforms, 'kind');
     return Object.entries(groupsObj);
   }, [platforms]);
