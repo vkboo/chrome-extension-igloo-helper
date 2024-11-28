@@ -8,10 +8,22 @@ import { COUNTRY_FLAGS } from './constants';
 import useKeyboardNav from './useKeyboardNav';
 
 export const SearchResult: FC<Props> = props => {
-  const { className, platforms } = props;
+  const { className, platforms: platformsProps } = props;
+
+  const platforms = React.useMemo(() => {
+    return platformsProps.map(platform => {
+      const { kind } = platform;
+      if (!kind) {
+        return {
+          ...platform,
+          kind: '[Untitled]',
+        };
+      }
+      return platform;
+    });
+  }, [platformsProps]);
 
   const groups = React.useMemo(() => {
-    // TODO bug:  kind -> undefined -> [Untitled]
     const groupsObj = groupBy(platforms, 'kind');
     return Object.entries(groupsObj);
   }, [platforms]);
