@@ -23,11 +23,23 @@ const manifest = {
   },
   content_scripts: [
     {
-      matches: ['https://auth.qa.iglooinsure.com/*'],
+      matches: [
+        'https://auth.dev.iglooinsure.com/*',
+        'https://auth.qa.iglooinsure.com/*',
+        'https://auth.staging.iglooinsure.com/*',
+        'https://auth.demo.iglooinsure.com/*',
+        'https://auth.iglooinsure.com/*',
+      ],
       js: ['content-ui/index.iife.js'],
     },
     {
-      matches: ['https://auth.qa.iglooinsure.com/*'],
+      matches: [
+        'https://auth.dev.iglooinsure.com/*',
+        'https://auth.qa.iglooinsure.com/*',
+        'https://auth.staging.iglooinsure.com/*',
+        'https://auth.demo.iglooinsure.com/*',
+        'https://auth.iglooinsure.com/*',
+      ],
       js: ['content/index.iife.js'],
       run_at: 'document_start',
       all_frames: true,
