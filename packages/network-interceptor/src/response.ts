@@ -22,7 +22,7 @@ window.addEventListener('message', (e: MessageEvent<MessageData>) => {
   const responseHeaders = new Headers(response.headers ?? {});
   listeners.forEach(listener => {
     const { method, url, callback } = listener;
-    if (method === request.method && request.url.includes(url)) {
+    if (method === request.method && request.url.endsWith(url)) {
       callback(request, { ...response, headers: responseHeaders }, { requestType: type });
     }
   });

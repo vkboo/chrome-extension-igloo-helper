@@ -1,7 +1,7 @@
 {
-  "name": "@extension/content-script",
+  "name": "@extension/content-script-main",
   "version": "0.0.1",
-  "description": "chrome extension - content script",
+  "description": "chrome extension - content script main",
   "private": true,
   "sideEffects": true,
   "files": [
@@ -25,7 +25,6 @@
   },
   "devDependencies": {
     "@extension/hmr": "workspace:*",
-    "@extension/tsconfig": "workspace:*",
     "@extension/vite-config": "workspace:*",
     "cross-env": "^7.0.3"
   }

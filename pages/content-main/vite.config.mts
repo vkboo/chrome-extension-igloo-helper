@@ -1,14 +1,12 @@
 import { resolve } from 'node:path';
 import { makeEntryPointPlugin } from '@extension/hmr';
 import { isDev, withPageConfig } from '@extension/vite-config';
-import { makeJavascriptFile } from '@extension/network-interceptor/plugins';
 
 const rootDir = resolve(__dirname);
 const srcDir = resolve(rootDir, 'src');
 
-
 const outDirDist = resolve(rootDir, '..', '..', 'dist');
-const outDirContent = resolve(outDirDist, 'content');
+const outDirContent = resolve(outDirDist, 'content-main');
 
 export default withPageConfig({
   resolve: {
@@ -19,13 +17,12 @@ export default withPageConfig({
   publicDir: resolve(rootDir, 'public'),
   plugins: [
     isDev && makeEntryPointPlugin(),
-    makeJavascriptFile({ outDir: outDirDist }),
   ],
   build: {
     lib: {
-      entry: resolve(__dirname, 'src/index.ts'),
+      entry: resolve(__dirname, 'src/index.js'),
       formats: ['iife'],
-      name: 'ContentScript',
+      name: 'ContentScriptMain',
       fileName: 'index',
     },
     outDir: outDirContent,

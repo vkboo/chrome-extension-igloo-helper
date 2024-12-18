@@ -54,7 +54,12 @@ export default function App() {
 
   return (
     <>
-      <AccessPage matches={['https://auth.*.iglooinsure.com/platforms', 'https://auth.iglooinsure.com/platforms']}>
+      <AccessPage
+        matches={[
+          'https://auth.*.iglooinsure.com/platforms',
+          'https://auth.iglooinsure.com/platforms',
+          'http://localhost:8080/',
+        ]}>
         <SearchBox className="fixed right-8 top-20 z-50">
           {keyword => <SearchResult platforms={filterPlatforms(keyword)} />}
         </SearchBox>

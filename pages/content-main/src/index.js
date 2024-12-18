@@ -65,9 +65,10 @@ window.fetch = async (...args) => {
   const responseHeaders = responseClone.headers;
   const responseContentType = responseHeaders.get('Content-Type');
   const responseHeadersJson = Object.fromEntries(responseHeaders.entries());
+  const DEFAULT_REQUEST_OPTIONS = { method: 'GET' };
 
   if (responseContentType.includes('application/json')) {
-    const [url, requestOptions] = args;
+    const [url, requestOptions = DEFAULT_REQUEST_OPTIONS] = args;
     const { data: requestData, method: requestMethod } = requestOptions;
     originResponse
       .clone()

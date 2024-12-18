@@ -2,6 +2,14 @@ import fs from 'node:fs';
 
 const packageJson = JSON.parse(fs.readFileSync('../package.json', 'utf8'));
 
+const matches = [
+  'https://auth.dev.iglooinsure.com/*',
+  'https://auth.qa.iglooinsure.com/*',
+  'https://auth.staging.iglooinsure.com/*',
+  'https://auth.demo.iglooinsure.com/*',
+  'https://auth.iglooinsure.com/*',
+];
+
 /**
  * After changing, please reload the extension at `chrome://extensions`
  * @type {chrome.runtime.ManifestV3}
@@ -23,26 +31,15 @@ const manifest = {
   },
   content_scripts: [
     {
-      matches: [
-        'https://auth.dev.iglooinsure.com/*',
-        'https://auth.qa.iglooinsure.com/*',
-        'https://auth.staging.iglooinsure.com/*',
-        'https://auth.demo.iglooinsure.com/*',
-        'https://auth.iglooinsure.com/*',
-      ],
+      matches,
       js: ['content-ui/index.iife.js'],
     },
     {
-      matches: [
-        'https://auth.dev.iglooinsure.com/*',
-        'https://auth.qa.iglooinsure.com/*',
-        'https://auth.staging.iglooinsure.com/*',
-        'https://auth.demo.iglooinsure.com/*',
-        'https://auth.iglooinsure.com/*',
-      ],
-      js: ['content/index.iife.js'],
+      matches,
+      js: ['content-main/index.iife.js'],
       run_at: 'document_start',
       all_frames: true,
+      world: 'MAIN',
     },
   ],
   web_accessible_resources: [

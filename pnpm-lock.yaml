@@ -271,7 +271,7 @@ importers:
         specifier: ^4.19.1
         version: 4.19.1
 
-  pages/content:
+  pages/content-main:
     dependencies:
       '@extension/network-interceptor':
         specifier: workspace:*
@@ -286,9 +286,6 @@ importers:
       '@extension/hmr':
         specifier: workspace:*
         version: link:../../packages/hmr
-      '@extension/tsconfig':
-        specifier: workspace:*
-        version: link:../../packages/tsconfig
       '@extension/vite-config':
         specifier: workspace:*
         version: link:../../packages/vite-config
