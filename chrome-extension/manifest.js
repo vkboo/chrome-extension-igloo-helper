@@ -1,14 +1,7 @@
 import fs from 'node:fs';
+import { GLOBAL_MATCHES } from '@extension/shared';
 
 const packageJson = JSON.parse(fs.readFileSync('../package.json', 'utf8'));
-
-const matches = [
-  'https://auth.dev.iglooinsure.com/*',
-  'https://auth.qa.iglooinsure.com/*',
-  'https://auth.staging.iglooinsure.com/*',
-  'https://auth.demo.iglooinsure.com/*',
-  'https://auth.iglooinsure.com/*',
-];
 
 /**
  * After changing, please reload the extension at `chrome://extensions`
@@ -31,11 +24,11 @@ const manifest = {
   },
   content_scripts: [
     {
-      matches,
+      matches: GLOBAL_MATCHES,
       js: ['content-ui/index.iife.js'],
     },
     {
-      matches,
+      matches: GLOBAL_MATCHES,
       js: ['content-main/index.iife.js'],
       run_at: 'document_start',
       all_frames: true,
