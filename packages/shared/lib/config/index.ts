@@ -1,1 +1,1 @@
-export * from './globalMatches';
+export * from './moduleMatches';
