@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { response } from '../../../../../../packages/network';
+import { response } from '@extension/network';
 
 export function useNetworkResponse<T extends any>(
   descriptor: string,
