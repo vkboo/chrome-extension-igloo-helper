@@ -1,5 +1,5 @@
 {
-  "name": "@extension/network-interceptor",
+  "name": "@extension/network",
   "version": "0.0.1",
   "private": true,
   "files": [

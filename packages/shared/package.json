@@ -23,6 +23,6 @@
   "devDependencies": {
     "@extension/storage": "workspace:*",
     "@extension/tsconfig": "workspace:*",
-    "@extension/network-interceptor": "workspace:*"
+    "@extension/network": "workspace:*"
   }
 }

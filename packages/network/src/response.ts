@@ -17,7 +17,7 @@ export const response = {
 };
 
 window.addEventListener('message', (e: MessageEvent<MessageData>) => {
-  if (e.data.source !== 'extension/network-interceptor') return;
+  if (e.data.source !== 'extension/network') return;
   const { type, request, response } = e.data;
   const responseHeaders = new Headers(response.headers ?? {});
   listeners.forEach(listener => {

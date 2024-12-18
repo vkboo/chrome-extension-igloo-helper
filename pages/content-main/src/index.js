@@ -15,7 +15,7 @@ function __parseHeaders(rawHeaders) {
 function __postMessage(data) {
   window.postMessage(
     {
-      source: 'extension/network-interceptor',
+      source: 'extension/network',
       ...data,
     },
     '*',

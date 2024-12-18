@@ -21,7 +21,7 @@ export type Listener = {
 };
 
 export type MessageData = {
-  source: 'extension/network-interceptor';
+  source: 'extension/network';
   type: 'fetch' | 'xhr';
   request: Request;
   response: Omit<Response, 'headers'> & {

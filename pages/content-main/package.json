@@ -21,7 +21,7 @@
   "dependencies": {
     "@extension/shared": "workspace:*",
     "@extension/storage": "workspace:*",
-    "@extension/network-interceptor": "workspace:*"
+    "@extension/network": "workspace:*"
   },
   "devDependencies": {
     "@extension/hmr": "workspace:*",

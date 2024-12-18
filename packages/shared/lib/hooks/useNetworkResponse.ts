@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { response } from '@extension/network-interceptor';
+import { response } from '../../../../../../packages/network';
 
 export function useNetworkResponse<T extends any>(
   descriptor: string,
