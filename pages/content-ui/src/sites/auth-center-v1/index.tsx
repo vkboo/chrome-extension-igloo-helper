@@ -1,42 +1,46 @@
-import { useNetworkResponse } from '@extension/shared/lib/hooks';
+import * as React from 'react';
+import type { FC } from 'react';
 import { SearchBox, SearchResult } from '../../components';
-import type { Platform } from '../../components/search-result/types';
+import { useRequest as useAxios } from '@extension/shared';
+import { useRequest } from 'ahooks';
 
-export function AuthCenterV1() {
-  const scope = useNetworkResponse<Record<string, boolean>>(
-    '/v1/admin_account/account/platform/admin/permissions',
-    _response => {
-      const _scope = {} as Record<string, boolean>;
-      _response?.permissions?.forEach(({ key }: any) => {
-        _scope[key] = true;
-      });
-      return _scope;
-    },
-  );
+export const AuthCenterV1: FC<{ request?: Request }> = props => {
+  const request = useAxios();
 
-  const platforms = useNetworkResponse<Platform[]>(
-    'GET /v1/admin_account/admin/platforms',
-    _response => {
-      const getLogoUrl = (key: string) => `https://static.iglooinsure.com/partner/square/${key}.svg`;
-      const platforms: any[] = _response.platforms ?? [];
-      return platforms
-        .map(p => {
-          return {
-            key: p.key,
-            logoUrl: getLogoUrl(p.key),
-            name: p.name,
-            country: p?.countries?.[0],
-            kind: p.kind,
-          };
-        })
-        .filter(({ key }) => {
-          if (key !== 'admin') {
-            return scope?.[`${key}_permission`] || scope?.[`${key}_role`] || scope?.[`${key}_account`];
-          }
-          return scope?.admin;
-        });
-    },
-    [scope],
+  const { data: scope } = useRequest(async () => {
+    const response: any = await request('/v1/admin_account/account/platform/admin/permissions');
+    const _scope = {} as Record<string, boolean>;
+    response?.permissions?.forEach(({ key }: any) => {
+      _scope[key] = true;
+    });
+    return _scope;
+  });
+
+  const { data: allPlatforms } = useRequest(async () => {
+    const response: any = await request('/v1/admin_account/admin/platforms');
+    const getLogoUrl = (key: string) => `https://static.iglooinsure.com/partner/square/${key}.svg`;
+    const plats: any[] = response.platforms ?? [];
+    return plats.map(p => {
+      return {
+        key: p.key,
+        logoUrl: getLogoUrl(p.key),
+        name: p.name,
+        country: p?.countries?.[0],
+        kind: p.kind,
+      };
+    });
+  });
+
+  const platforms = React.useMemo(
+    () =>
+      allPlatforms?.filter(e => {
+        const { key } = e;
+        if (key !== 'admin') {
+          return scope?.[`${key}_permission`] || scope?.[`${key}_role`] || scope?.[`${key}_account`];
+        }
+        return scope?.admin;
+      }),
+    [allPlatforms, scope],
   );
 
   const filterPlatforms = (keyword: string) => {
@@ -54,4 +58,4 @@ export function AuthCenterV1() {
       {keyword => <SearchResult platforms={filterPlatforms(keyword)} />}
     </SearchBox>
   );
-}
+};
